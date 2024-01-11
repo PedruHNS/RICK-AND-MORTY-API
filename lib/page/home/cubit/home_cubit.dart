@@ -12,68 +12,39 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.repository) : super(HomeInitial());
 
   Future<void> fetchPage() async {
-    if (state is HomeLoading) return;
     final currentState = state;
 
-    List<PersonModel> currentCharacters =
-        (currentState is HomeSuccess) ? currentState.characters : [];
+    final newCharacters =
+        await repository.findAllPerson(page: currentState.page);
 
-    emit(HomeLoading(
-        characters: currentCharacters,
-        hasReachedMax: false,
-        page: currentState.page));
-
-    try {
-      final newCharacters =
-          await repository.findAllPerson(page: currentState.page);
-
-      if (newCharacters.isEmpty) {
-        emit(HomeSuccess(
-            characters: currentCharacters,
-            hasReachedMax: true,
-            page: currentState.page));
-      } else {
-        emit(HomeSuccess(
-            characters: [...currentCharacters, ...newCharacters],
-            hasReachedMax: false,
-            page: currentState.page + 1));
-      }
-    } catch (e) {
-      emit(const HomeError('error'));
+    List<PersonModel> currentCharacters = [];
+    if (currentState is HomeSuccess) {
+      currentCharacters = currentState.characters;
+    } else {
+      currentCharacters = [];
     }
+
+    emit(HomeSuccess(
+        characters: [...currentCharacters, ...newCharacters],
+        hasReachedMax: false,
+        page: currentState.page + 1));
   }
 
   Future<void> fetchBySpecies(String species) async {
-    if (state is HomeLoading) return;
     emit(HomeInitial());
     final currentState = state;
 
+    final newCharacters = await repository.findAllBySpecies(
+        page: currentState.page, species: species);
+
     List<PersonModel> currentCharacters =
         (currentState is HomeSuccess) ? currentState.characters : [];
+    final pageNext = currentState.page + 1;
 
-    emit(HomeLoading(
-        characters: currentCharacters,
+    emit(HomeSuccess(
+        characters: [...currentCharacters, ...newCharacters],
         hasReachedMax: false,
-        page: currentState.page));
-
-    try {
-      final newCharacters = await repository.findAllBySpecies(
-          page: currentState.page, species: species);
-
-      if (newCharacters.isEmpty) {
-        emit(HomeSuccess(
-            characters: currentCharacters,
-            hasReachedMax: true,
-            page: currentState.page));
-      } else {
-        final pageNext = currentState.page + 1;
-        emit(HomeSuccess(
-            characters: [...currentCharacters, ...newCharacters],
-            hasReachedMax: false,
-            page: pageNext));
-      }
-    } catch (e) {
-      emit(const HomeError('error'));
-    }
+        page: pageNext));
+    
   }
 }

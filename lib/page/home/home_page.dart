@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     if (!_scrollController.hasClients) return false;
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
-    return currentScroll >= maxScroll * 0.9 && state is! HomeLoading;
+    return currentScroll >= maxScroll * 0.9 && state is! HomeInitial;
   }
 
   @override
@@ -80,9 +80,6 @@ class _HomePageState extends State<HomePage> {
                       HomeInitial() => const Center(
                           child: CircularProgressIndicator(),
                         ),
-                      HomeLoading() => ListViewPerson(
-                          characters: state.characters,
-                          scrollController: _scrollController),
                       HomeSuccess() => ListViewPerson(
                           characters: state.characters,
                           scrollController: _scrollController),

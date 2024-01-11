@@ -20,13 +20,6 @@ sealed class HomeState extends Equatable {
 
 final class HomeInitial extends HomeState {}
 
-final class HomeLoading extends HomeState {
-  const HomeLoading(
-      {required super.characters,
-      required super.hasReachedMax,
-      required super.page});
-}
-
 final class HomeSuccess extends HomeState {
   const HomeSuccess(
       {required super.characters,
