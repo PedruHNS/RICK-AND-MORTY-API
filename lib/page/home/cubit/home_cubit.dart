@@ -7,7 +7,6 @@ import 'package:rick_morty/repository/rick_and_morty_repository.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  // String filter = 'All';
 
   final RickAndMortyRepository repository;
 

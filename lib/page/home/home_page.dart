@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _scrollController = ScrollController();
   final _textController = TextEditingController();
-  String filter = "All";
+  
 
   void _onScroll() {
     if (_isBottom(context.read<HomeCubit>().state)) {
@@ -41,11 +41,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _scrollController.addListener(_onScroll);
-    if (filter == 'All') {
-      context.read<HomeCubit>().fetchPage();
-    } else {
-      context.read<HomeCubit>().fetchBySpecies(filter);
-    }
+
+    context.read<HomeCubit>().fetchPage();
 
     super.initState();
   }
@@ -54,6 +51,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        
         body: Container(
           decoration: const BoxDecoration(
             color: Colors.black,

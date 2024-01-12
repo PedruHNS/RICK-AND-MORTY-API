@@ -49,10 +49,6 @@ class _FilterSpeciesState extends State<FilterSpecies> {
               .toList(),
           onChanged: (String? value) {
             if (value != null) {
-              // context.read<HomeCubit>().filter = value;
-              // value == "All"
-              //     ? context.read<HomeCubit>().fetchPage()
-              //     : context.read<HomeCubit>().fetchBySpecies(value);
               if (value == "All") {
                 context.read<HomeCubit>().emitHomeInitial();
                 context.read<HomeCubit>().fetchPage();
