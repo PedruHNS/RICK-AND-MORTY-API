@@ -7,27 +7,45 @@ import 'package:rick_morty/repository/rick_and_morty_repository.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
+  // String filter = 'All';
+
   final RickAndMortyRepository repository;
 
   HomeCubit(this.repository) : super(HomeInitial());
 
   Future<void> fetchPage() async {
+    if (state.hasReachedMax) return;
     final currentState = state;
 
-    final newCharacters =
-        await repository.findAllPerson(page: currentState.page);
+    List<PersonModel> newCharacters = [];
 
-    List<PersonModel> currentCharacters = [];
-    if (currentState is HomeSuccess) {
-      currentCharacters = currentState.characters;
+    if (currentState.filter == 'All') {
+      newCharacters = await repository.findAllPerson(page: currentState.page);
     } else {
-      currentCharacters = [];
+      newCharacters = await repository.findAllBySpecies(
+          page: currentState.page, species: currentState.filter);
     }
 
-    emit(HomeSuccess(
-        characters: [...currentCharacters, ...newCharacters],
-        hasReachedMax: false,
-        page: currentState.page + 1));
+    List<PersonModel> currentCharacters =
+        (currentState is HomeSuccess) ? currentState.characters : [];
+
+    try {
+      if (currentState.page >= 42) {
+        emit(HomeSuccess(
+            characters: [...currentCharacters, ...newCharacters],
+            hasReachedMax: true,
+            page: currentState.page,
+            filter: currentState.filter));
+      }
+      final pageNext = currentState.page + 1;
+      emit(HomeSuccess(
+          characters: [...currentCharacters, ...newCharacters],
+          hasReachedMax: false,
+          page: pageNext,
+          filter: currentState.filter));
+    } on Exception catch (_) {
+      emit(const HomeError('error'));
+    }
   }
 
   Future<void> fetchBySpecies(String species) async {
@@ -44,7 +62,11 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeSuccess(
         characters: [...currentCharacters, ...newCharacters],
         hasReachedMax: false,
-        page: pageNext));
-    
+        page: pageNext,
+        filter: species));
+  }
+
+  void emitHomeInitial() {
+    emit(HomeInitial());
   }
 }

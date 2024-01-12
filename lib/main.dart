@@ -16,12 +16,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-      
       ),
       onGenerateRoute: (settings) {
         if (settings.name == '/') {
@@ -32,8 +30,7 @@ class MyApp extends StatelessWidget {
                     child: const HomePage(),
                   ));
         }
-        if (settings.name == '/character') 
-        {
+        if (settings.name == '/character') {
           final person = settings.arguments as PersonModel;
           return MaterialPageRoute(
             builder: (context) => CharacterPage(

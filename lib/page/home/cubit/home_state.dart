@@ -3,12 +3,14 @@ part of 'home_cubit.dart';
 sealed class HomeState extends Equatable {
   final List<PersonModel> characters;
   final bool hasReachedMax;
+  final String filter;
   final int page;
 
   const HomeState({
     this.characters = const [],
     this.hasReachedMax = false,
     this.page = 1,
+    this.filter = 'All',
   });
 
   @override
@@ -21,10 +23,12 @@ sealed class HomeState extends Equatable {
 final class HomeInitial extends HomeState {}
 
 final class HomeSuccess extends HomeState {
-  const HomeSuccess(
-      {required super.characters,
-      required super.hasReachedMax,
-      required super.page});
+  const HomeSuccess({
+    required super.characters,
+    required super.hasReachedMax,
+    required super.page,
+    required super.filter,
+  });
 }
 
 final class HomeError extends HomeState {
