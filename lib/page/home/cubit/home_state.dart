@@ -17,6 +17,8 @@ sealed class HomeState extends Equatable {
   List<Object> get props => [
         characters,
         hasReachedMax,
+        page,
+        filter,
       ];
 }
 

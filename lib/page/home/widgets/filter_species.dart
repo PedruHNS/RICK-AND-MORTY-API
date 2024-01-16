@@ -20,7 +20,7 @@ class _FilterSpeciesState extends State<FilterSpecies> {
     'Poopybutthole',
     'Mythological Creature',
   ];
-  String dropdownValue = species.first;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -39,12 +39,12 @@ class _FilterSpeciesState extends State<FilterSpecies> {
             height: 1,
             color: Colors.white,
           ),
-          value: dropdownValue,
+          value: context.read<HomeCubit>().state.filter,
           items: species
               .map<DropdownMenuItem<String>>(
-                  (species) => DropdownMenuItem<String>(
-                        value: species,
-                        child: Text(species),
+                  (value) => DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
                       ))
               .toList(),
           onChanged: (String? value) {
@@ -55,9 +55,6 @@ class _FilterSpeciesState extends State<FilterSpecies> {
               } else {
                 context.read<HomeCubit>().fetchBySpecies(value);
               }
-              setState(() {
-                dropdownValue = value;
-              });
             }
           },
         )
