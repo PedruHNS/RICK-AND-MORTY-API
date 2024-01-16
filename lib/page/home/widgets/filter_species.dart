@@ -31,31 +31,34 @@ class _FilterSpeciesState extends State<FilterSpecies> {
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 16)),
-        DropdownButton(
-          style: const TextStyle(color: Colors.white),
-          dropdownColor: Colors.grey[900],
-          iconEnabledColor: Colors.white,
-          underline: Container(
-            height: 1,
-            color: Colors.white,
-          ),
-          value: context.read<HomeCubit>().state.filter,
-          items: species
-              .map<DropdownMenuItem<String>>(
-                  (value) => DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      ))
-              .toList(),
-          onChanged: (String? value) {
-            if (value != null) {
-              if (value == "All") {
-                context.read<HomeCubit>().emitHomeInitial();
-                context.read<HomeCubit>().fetchPage();
-              } else {
-                context.read<HomeCubit>().fetchBySpecies(value);
-              }
-            }
+        BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            return DropdownButton(
+              style: const TextStyle(color: Colors.white),
+              dropdownColor: Colors.grey[900],
+              iconEnabledColor: Colors.white,
+              underline: Container(
+                height: 1,
+                color: Colors.white,
+              ),
+              value: state.filter,
+              items: species
+                  .map<DropdownMenuItem<String>>(
+                      (value) => DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          ))
+                  .toList(),
+              onChanged: (String? value) {
+                if (value == null) return;
+                if (value == "All") {
+                  context.read<HomeCubit>().emitHomeInitial();
+                  context.read<HomeCubit>().fetchPage();
+                } else {
+                  context.read<HomeCubit>().fetchBySpecies(value);
+                }
+              },
+            );
           },
         )
       ],
