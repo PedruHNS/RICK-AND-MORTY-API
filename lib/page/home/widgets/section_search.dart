@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rick_morty/page/home/cubit/home_cubit.dart';
 import 'package:rick_morty/page/home/widgets/filter_species.dart';
 
 class SectionSearch extends StatelessWidget {
@@ -13,7 +15,11 @@ class SectionSearch extends StatelessWidget {
         children: [
           TextField(
             onTapOutside: (event) => FocusScope.of(context).unfocus(),
-            onChanged: (value) {},
+            onChanged: (value) {
+              if (value.isNotEmpty) {
+                context.read<HomeCubit>().findByname(value);
+              }
+            },
             controller: textController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
