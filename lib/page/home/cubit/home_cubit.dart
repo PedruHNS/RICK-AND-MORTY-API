@@ -38,7 +38,8 @@ class HomeCubit extends Cubit<HomeState> {
           filter: currentState.filter,
         ));
       }
-      final pageNext = currentState.page + 40;
+      final pageNext = currentState.page + 1;
+
       emit(HomeSuccess(
         characters: [...currentCharacters, ...newCharacters],
         hasReachedMax: false,
