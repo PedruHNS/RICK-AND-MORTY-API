@@ -30,7 +30,9 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       if (currentState.page >= 42) {
         emit(HomeSuccess(
-          characters: [...currentCharacters, ...newCharacters],
+          characters: [
+            ...currentCharacters,
+          ],
           hasReachedMax: true,
           page: currentState.page,
           filter: currentState.filter,

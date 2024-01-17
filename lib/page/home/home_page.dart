@@ -14,7 +14,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _scrollController = ScrollController();
   final _textController = TextEditingController();
-  
 
   void _onScroll() {
     if (_isBottom(context.read<HomeCubit>().state)) {
@@ -51,7 +50,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        
         body: Container(
           decoration: const BoxDecoration(
             color: Colors.black,

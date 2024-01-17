@@ -16,8 +16,10 @@ class SectionSearch extends StatelessWidget {
           TextField(
             onTapOutside: (event) => FocusScope.of(context).unfocus(),
             onChanged: (value) {
-              if (value.isNotEmpty) {
+              if (value.isNotEmpty && value.length > 2) {
                 context.read<HomeCubit>().findByname(value);
+              } else {
+                context.read<HomeCubit>().fetchPage();
               }
             },
             controller: textController,
