@@ -13,7 +13,6 @@ class ListViewPerson extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<HomeCubit>().state.hasReachedMax;
     return ListView.builder(
         itemCount: context.read<HomeCubit>().state.hasReachedMax
             ? characters.length
